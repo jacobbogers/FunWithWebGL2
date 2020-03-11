@@ -45,7 +45,9 @@ function GLInstance(canvasID){
 	}
 
 	//Turns arrays into GL buffers, then setup a VAO that will predefine the buffers to standard shader attributes.
-	gl.fCreateMeshVAO = function(name,aryInd,aryVert,aryNorm,aryUV){
+	gl.fCreateMeshVAO = function(
+		name,
+		aryInd /*if you dont use indexes keep this null*/,aryVert,aryNorm,aryUV){
 		var rtn = { drawMode:this.TRIANGLES };
 
 		//Create and bind vao
@@ -59,10 +61,19 @@ function GLInstance(canvasID){
 			rtn.vertexComponentLen = 3;																//How many floats make up a vertex
 			rtn.vertexCount = aryVert.length / rtn.vertexComponentLen;								//How many vertices in the array
 
-			this.bindBuffer(this.ARRAY_BUFFER, rtn.bufVertices);
-			this.bufferData(this.ARRAY_BUFFER, new Float32Array(aryVert), this.STATIC_DRAW);		//then push array into it.
-			this.enableVertexAttribArray(ATTR_POSITION_LOC);										//Enable Attribute location
-			this.vertexAttribPointer(ATTR_POSITION_LOC,3,this.FLOAT,false,0,0);						//Put buffer at location of the vao
+			this.bindBuffer(this.ARRAY_BUFFER, rtn.bufVertices); // operations , bufferData will operate on the bound buffer
+			this.bufferData(this.ARRAY_BUFFER, new Float32Array(aryVert), this.STATIC_DRAW /* <- usage hint,*/); // initializes/fills internal buffer data store
+			// because you have the buffer selected somehow		//then push array into it.
+			this.enableVertexAttribArray(ATTR_POSITION_LOC); // so you switch the location to on //Enable Attribute location
+			this.vertexAttribPointer(
+				ATTR_POSITION_LOC, // index
+				3, // number of points?
+				this.FLOAT, // type
+				false, // not applicable (specifying whether integer data values should be normalized into a certain range when being cast to a float.)
+				0, // stride
+				0 // offset
+			); //put the buffer at the location you just switched on
+			//Put buffer at location of the vao
 		}
 
 		//.......................................................

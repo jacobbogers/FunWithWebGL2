@@ -33,8 +33,14 @@
 				gShader = new TestShader(gl);
 
 				//............................................
-				//Set Up Data Buffers
-				var mesh = gl.fCreateMeshVAO("dots",null,[0,0,0, 0.1,0.1,0, 0.1,-0.1,0, -0.1,-0.1,0, -0.1,0.1,0]);
+				//Set Up Data Buffers  // 5 points
+				var mesh = gl.fCreateMeshVAO("dots",null,[
+					0,0,0, 
+					0.1,0.1,0,
+					0.1,-0.1,0,
+					-0.1,-0.1,0,
+					-0.1,0.1,0
+				]);
 				mesh.drawMode = gl.POINTS; //Most often the draw mode will be triangles, but in this instance we need Points
 				
 				//There is many instances when we want a single mesh object shared between many 

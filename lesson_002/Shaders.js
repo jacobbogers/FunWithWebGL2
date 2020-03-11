@@ -18,12 +18,15 @@ class ShaderUtil{
 		gl.compileShader(shader);
 
 		//Get Error data if shader failed compiling
+		//per shader compile status
+		// gl.DELETE_STATUS
+		// COMPILE_STATUS
+		// SHADER_TYPE
 		if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)){
 			console.error("Error compiling shader : " + src, gl.getShaderInfoLog(shader));
 			gl.deleteShader(shader);
 			return null;
 		}
-
 		return shader;
 	}
 
@@ -38,7 +41,8 @@ class ShaderUtil{
 		//Check if successful
 		if(!gl.getProgramParameter(prog, gl.LINK_STATUS)){
 			console.error("Error creating shader program.",gl.getProgramInfoLog(prog));
-			gl.deleteProgram(prog); return null;
+			gl.deleteProgram(prog); 
+			return null;
 		}
 
 		//Only do this for additional debugging.
@@ -46,7 +50,8 @@ class ShaderUtil{
 			gl.validateProgram(prog);
 			if(!gl.getProgramParameter(prog,gl.VALIDATE_STATUS)){
 				console.error("Error validating program", gl.getProgramInfoLog(prog));
-				gl.deleteProgram(prog); return null;
+				gl.deleteProgram(prog); 
+				return null;
 			}
 		}
 		
@@ -69,7 +74,7 @@ class ShaderUtil{
 		var fShaderTxt	= ShaderUtil.domShaderSrc(fragID);								if(!fShaderTxt)	return null;
 		var vShader		= ShaderUtil.createShader(gl,vShaderTxt,gl.VERTEX_SHADER);		if(!vShader)	return null;
 		var fShader		= ShaderUtil.createShader(gl,fShaderTxt,gl.FRAGMENT_SHADER);	if(!fShader)	return null;
-		
+
 		return ShaderUtil.createProgram(gl,vShader,fShader,true);
 	}
 }
